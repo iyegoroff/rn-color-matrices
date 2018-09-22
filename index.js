@@ -171,6 +171,13 @@ const staticFilters = {
 export default {
   normal: () => staticFilters.normal,
 
+  rgba: (r = 1, g = 1, b = 1, a = 1) => [
+    r, 0, 0, 0, 0,
+    0, g, 0, 0, 0,
+    0, 0, b, 0, 0,
+    0, 0, 0, a, 0
+  ],
+
   saturate: (v = 1) => [
     0.213 + 0.787 * v, 0.715 - 0.715 * v, 0.072 - 0.072 * v, 0, 0,
     0.213 - 0.213 * v, 0.715 + 0.285 * v, 0.072 - 0.072 * v, 0, 0,
