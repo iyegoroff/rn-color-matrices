@@ -27,7 +27,7 @@ const staticFilters = {
     0, 0, 0, 1, 0
   ],
 
-  grayscale: [
+  blackAndWhite: [
     0.299, 0.587, 0.114, 0, 0,
     0.299, 0.587, 0.114, 0, 0,
     0.299, 0.587, 0.114, 0, 0,
@@ -210,7 +210,14 @@ export default {
 
   invert: () => staticFilters.invert,
 
-  grayscale: () => staticFilters.grayscale,
+  blackAndWhite: () => staticFilters.blackAndWhite,
+
+  grayscale: (v = 1) => [
+    v, v, v, 0, 0,
+    v, v, v, 0, 0,
+    v, v, v, 0, 0,
+    0, 0, 0, 1, 0
+  ],
 
   sepia: () => staticFilters.sepia,
 
