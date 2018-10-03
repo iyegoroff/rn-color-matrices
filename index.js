@@ -5,6 +5,12 @@ import { Platform, processColor } from 'react-native';
 const bias = Platform.OS === 'ios' ? 1 : 255;
 const biasRev = Platform.OS === 'ios' ? 255 : 1;
 
+const colorToRGB = (color) => [
+  ((color >> 16) & 0xFF) / 255,
+  ((color >> 8) & 0xFF) / 255,
+  (color & 0xFF) / 255
+];
+
 const staticFilters = {
   normal: [
     1, 0, 0, 0, 0,
@@ -335,24 +341,26 @@ export default {
   lsd: () => staticFilters.lsd,
 
   colorTone: (desaturation, toned, lightColor, darkColor) => {
-    desaturation = desaturation === undefined ? 0.2 : desaturation;
-    toned = toned === undefined ? 0.15 : toned;
-    lightColor = lightColor === undefined ? 0xFFE580 : processColor(lightColor);
-    darkColor = darkColor === undefined ? 0x338000 : processColor(darkColor);
-
-    const lR = ((lightColor >> 16) & 0xFF) / 255;
-    const lG = ((lightColor >> 8) & 0xFF) / 255;
-    const lB = (lightColor & 0xFF) / 255;
-
-    const dR = ((darkColor >> 16) & 0xFF) / 255;
-    const dG = ((darkColor >> 8) & 0xFF) / 255;
-    const dB = (darkColor & 0xFF) / 255;
+    const [lR, lG, lB] = colorToRGB(lightColor === undefined ? 0xFFE580 : processColor(lightColor));
+    const [dR, dG, dB] = colorToRGB(darkColor === undefined ? 0x338000 : processColor(darkColor));
 
     return [
       0.3, 0.59, 0.11, 0, 0,
-      lR, lG, lB, desaturation, 0,
-      dR, dG, dB, toned, 0,
+      lR, lG, lB, (desaturation === undefined ? 0.2 : desaturation), 0,
+      dR, dG, dB, (toned === undefined ? 0.15 : toned), 0,
       lR - dR, lG - dG, lB - dB, 0, 0
+    ];
+  },
+
+  duoTone: (first, second) => {
+    const [fR, fG, fB] = colorToRGB(first === undefined ? 0xFFE580 : processColor(first));
+    const [sR, sG, sB] = colorToRGB(second === undefined ? 0x338000 : processColor(second));
+
+    return [
+      fR - sR, 0, 0, 0, sR * bias,
+      fG - sG, 0, 0, 0, sG * bias,
+      fB - sB, 0, 0, 0, sB * bias,
+      0, 0, 0, 1, 0
     ];
   },
 
