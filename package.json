@@ -29,5 +29,8 @@
       "semistandard --fix",
       "git add"
     ]
+  },
+  "dependencies": {
+    "clamp": "^1.0.1"
   }
 }

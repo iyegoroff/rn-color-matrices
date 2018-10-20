@@ -1,6 +1,5 @@
 import { Platform, processColor } from 'react-native';
-
-// filters taken from here: https://github.com/skratchdot/color-matrix/blob/master/lib/filters.js
+import clamp from 'clamp';
 
 const bias = Platform.OS === 'ios' ? 1 : 255;
 const biasRev = Platform.OS === 'ios' ? 255 : 1;
@@ -37,13 +36,6 @@ const staticFilters = {
     0.299, 0.587, 0.114, 0, 0,
     0.299, 0.587, 0.114, 0, 0,
     0.299, 0.587, 0.114, 0, 0,
-    0, 0, 0, 1, 0
-  ],
-
-  sepia: [
-    0.393, 0.769, 0.189, 0, 0,
-    0.349, 0.686, 0.168, 0, 0,
-    0.272, 0.534, 0.131, 0, 0,
     0, 0, 0, 1, 0
   ],
 
@@ -218,14 +210,27 @@ export default {
 
   blackAndWhite: () => staticFilters.blackAndWhite,
 
-  grayscale: (v = 1) => [
-    v, v, v, 0, 0,
-    v, v, v, 0, 0,
-    v, v, v, 0, 0,
-    0, 0, 0, 1, 0
-  ],
+  grayscale: (v = 1) => {
+    const cv = clamp(1 - v, 0, 1);
 
-  sepia: () => staticFilters.sepia,
+    return [
+      0.2126 + 0.7874 * cv, 0.7152 - 0.7152 * cv, 0.0722 - 0.0722 * cv, 0, 0,
+      0.2126 - 0.2126 * cv, 0.7152 + 0.2848 * cv, 0.0722 - 0.0722 * cv, 0, 0,
+      0.2126 - 0.2126 * cv, 0.7152 - 0.7152 * cv, 0.0722 + 0.9278 * cv, 0, 0,
+      0, 0, 0, 1, 0
+    ];
+  },
+
+  sepia: (v = 1) => {
+    const cv = clamp(1 - v, 0, 1);
+
+    return [
+      0.393 + 0.607 * cv, 0.769 - 0.769 * cv, 0.189 - 0.189 * cv, 0, 0,
+      0.349 - 0.349 * cv, 0.686 + 0.314 * cv, 0.168 - 0.168 * cv, 0, 0,
+      0.272 - 0.272 * cv, 0.534 - 0.534 * cv, 0.131 + 0.869 * cv, 0, 0,
+      0, 0, 0, 1, 0
+    ];
+  },
 
   nightvision: () => staticFilters.nightvision,
 

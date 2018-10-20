@@ -10,5 +10,7 @@ Intended for usage with react-native:
 
 ## Credits
 
-- all color filters are taken from [color-matrix](https://github.com/skratchdot/color-matrix)
-  project by @skratchdot and Pixi.js [sources](https://goo.gl/1GLTCU)
+- most of color filters are taken from [color-matrix](https://github.com/skratchdot/color-matrix)
+  project by @skratchdot, Pixi.js [sources](https://github.com/pixijs/pixi.js/blob/dev/src/filters/colormatrix/ColorMatrixFilter.js)
+  and Webkit [sources](https://github.com/WebKit/webkit/blob/fd2225c344d4ea5ebcf1bdf437df251d95f8035c/Source/WebCore/platform/graphics/ColorUtilities.cpp)
+- `DuoTone` filter based on [example](https://codepen.io/jmperez/pen/LGqaxQ) by José Manuel Pérez
