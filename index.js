@@ -32,13 +32,6 @@ const staticFilters = {
     0, 0, 0, 1, 0
   ],
 
-  blackAndWhite: [
-    0.299, 0.587, 0.114, 0, 0,
-    0.299, 0.587, 0.114, 0, 0,
-    0.299, 0.587, 0.114, 0, 0,
-    0, 0, 0, 1, 0
-  ],
-
   nightvision: [
     0.1, 0.4, 0, 0, 0,
     0.3, 1, 0.3, 0, 0,
@@ -207,8 +200,6 @@ export default {
   luminanceToAlpha: () => staticFilters.luminanceToAlpha,
 
   invert: () => staticFilters.invert,
-
-  blackAndWhite: () => staticFilters.blackAndWhite,
 
   grayscale: (v = 1) => {
     const cv = clamp(1 - v, 0, 1);
