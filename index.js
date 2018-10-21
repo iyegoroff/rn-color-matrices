@@ -229,27 +229,12 @@ export default {
 
   cool: () => staticFilters.cool,
 
-  brightness: (v = 0) => {
-    const n = bias * (v / 100);
-
-    return [
-      1, 0, 0, 0, n,
-      0, 1, 0, 0, n,
-      0, 0, 1, 0, n,
-      0, 0, 0, 1, 0
-    ];
-  },
-
-  exposure: (v = 1) => {
-    const n = Math.max(v, 0);
-
-    return [
-      n, 0, 0, 0, 0,
-      0, n, 0, 0, 0,
-      0, 0, n, 0, 0,
-      0, 0, 0, 1, 0
-    ];
-  },
+  brightness: (v = 1) => [
+    v, 0, 0, 0, 0,
+    0, v, 0, 0, 0,
+    0, 0, v, 0, 0,
+    0, 0, 0, 1, 0
+  ],
 
   contrast: (v = 1) => {
     const n = 0.5 * (1 - v);
@@ -277,12 +262,12 @@ export default {
   ],
 
   threshold: (v = 0) => {
-    const rLum = 0.3086;
-    const gLum = 0.6094;
-    const bLum = 0.0820;
-    const r = rLum * 256;
-    const g = gLum * 256;
-    const b = bLum * 256;
+    const rLum = 0.03086;
+    const gLum = 0.06094;
+    const bLum = 0.00820;
+    const r = rLum * 255;
+    const g = gLum * 255;
+    const b = bLum * 255;
 
     return [
       r, g, b, 0, -bias * v,
