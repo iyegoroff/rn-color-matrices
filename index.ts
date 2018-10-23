@@ -1,6 +1,11 @@
 import { Platform, processColor } from 'react-native'
 import clamp from 'clamp'
 
+export type Matrix = [
+  number, number, number, number, number, number, number, number, number, number,
+  number, number, number, number, number, number, number, number, number, number
+]
+
 const bias = Platform.OS === 'ios' ? 1 : 255
 const biasRev = Platform.OS === 'ios' ? 255 : 1
 
@@ -10,7 +15,7 @@ const colorToRGB = (color: number) => [
   (color & 0xFF) / 255
 ]
 
-const staticFilters = {
+const staticFilters: { [key: string]: Matrix } = {
   normal: [
     1, 0, 0, 0, 0,
     0, 1, 0, 0, 0,
@@ -160,23 +165,23 @@ const staticFilters = {
 }
 
 export default {
-  normal: () => staticFilters.normal,
+  normal: (): Matrix => staticFilters.normal,
 
-  rgba: (r = 1, g = 1, b = 1, a = 1) => [
+  rgba: (r = 1, g = 1, b = 1, a = 1): Matrix => [
     r, 0, 0, 0, 0,
     0, g, 0, 0, 0,
     0, 0, b, 0, 0,
     0, 0, 0, a, 0
   ],
 
-  saturate: (v = 1) => [
+  saturate: (v = 1): Matrix => [
     0.213 + 0.787 * v, 0.715 - 0.715 * v, 0.072 - 0.072 * v, 0, 0,
     0.213 - 0.213 * v, 0.715 + 0.285 * v, 0.072 - 0.072 * v, 0, 0,
     0.213 - 0.213 * v, 0.715 - 0.715 * v, 0.072 + 0.928 * v, 0, 0,
     0, 0, 0, 1, 0
   ],
 
-  hueRotate: (v = 0) => {
+  hueRotate: (v = 0): Matrix => {
     const cos = Math.cos(v)
     const sin = Math.sin(v)
     const a00 = (0.213) + (cos * 0.787) - (sin * 0.213)
@@ -197,11 +202,11 @@ export default {
     ]
   },
 
-  luminanceToAlpha: () => staticFilters.luminanceToAlpha,
+  luminanceToAlpha: (): Matrix => staticFilters.luminanceToAlpha,
 
-  invert: () => staticFilters.invert,
+  invert: (): Matrix => staticFilters.invert,
 
-  grayscale: (v = 1) => {
+  grayscale: (v = 1): Matrix => {
     const cv = clamp(1 - v, 0, 1)
 
     return [
@@ -212,7 +217,7 @@ export default {
     ]
   },
 
-  sepia: (v = 1) => {
+  sepia: (v = 1): Matrix => {
     const cv = clamp(1 - v, 0, 1)
 
     return [
@@ -223,20 +228,20 @@ export default {
     ]
   },
 
-  nightvision: () => staticFilters.nightvision,
+  nightvision: (): Matrix => staticFilters.nightvision,
 
-  warm: () => staticFilters.warm,
+  warm: (): Matrix => staticFilters.warm,
 
-  cool: () => staticFilters.cool,
+  cool: (): Matrix => staticFilters.cool,
 
-  brightness: (v = 1) => [
+  brightness: (v = 1): Matrix => [
     v, 0, 0, 0, 0,
     0, v, 0, 0, 0,
     0, 0, v, 0, 0,
     0, 0, 0, 1, 0
   ],
 
-  contrast: (v = 1) => {
+  contrast: (v = 1): Matrix => {
     const n = 0.5 * (1 - v)
 
     return [
@@ -247,21 +252,21 @@ export default {
     ]
   },
 
-  temperature: (v = 0) => [
+  temperature: (v = 0): Matrix => [
     1 + v, 0, 0, 0, 0,
     0, 1, 0, 0, 0,
     0, 0, 1 - v, 0, 0,
     0, 0, 0, 1, 0
   ],
 
-  tint: (v = 0) => [
+  tint: (v = 0): Matrix => [
     1 + v, 0, 0, 0, 0,
     0, 1, 0, 0, 0,
     0, 0, 1 + v, 0, 0,
     0, 0, 0, 1, 0
   ],
 
-  threshold: (v = 0) => {
+  threshold: (v = 0): Matrix => {
     const rLum = 0.03086
     const gLum = 0.06094
     const bLum = 0.00820
@@ -277,26 +282,26 @@ export default {
     ]
   },
 
-  technicolor: () => staticFilters.technicolor,
+  technicolor: (): Matrix => staticFilters.technicolor,
 
-  polaroid: () => staticFilters.polaroid,
+  polaroid: (): Matrix => staticFilters.polaroid,
 
-  toBGR: () => staticFilters.toBGR,
+  toBGR: (): Matrix => staticFilters.toBGR,
 
-  kodachrome: () => staticFilters.kodachrome,
+  kodachrome: (): Matrix => staticFilters.kodachrome,
 
-  browni: () => staticFilters.browni,
+  browni: (): Matrix => staticFilters.browni,
 
-  vintage: () => staticFilters.vintage,
+  vintage: (): Matrix => staticFilters.vintage,
 
-  night: (v = 0.1) => [
+  night: (v = 0.1): Matrix => [
     v * (-2.0), -v, 0, 0, 0,
     -v, 0, v, 0, 0,
     0, v, v * 2.0, 0, 0,
     0, 0, 0, 1, 0
   ],
 
-  predator: (v = 1) => [
+  predator: (v = 1): Matrix => [
     // row 1
     11.224130630493164 * v,
     -4.794486999511719 * v,
@@ -319,9 +324,14 @@ export default {
     0, 0, 0, 1, 0
   ],
 
-  lsd: () => staticFilters.lsd,
+  lsd: (): Matrix => staticFilters.lsd,
 
-  colorTone: (desaturation?: number, toned?: number, lightColor?: string, darkColor?: string) => {
+  colorTone: (
+    desaturation?: number,
+    toned?: number,
+    lightColor?: string,
+    darkColor?: string
+  ): Matrix => {
     const [lR, lG, lB] = colorToRGB(lightColor === undefined ? 0xFFE580 : processColor(lightColor))
     const [dR, dG, dB] = colorToRGB(darkColor === undefined ? 0x338000 : processColor(darkColor))
 
@@ -333,7 +343,7 @@ export default {
     ]
   },
 
-  duoTone: (first?: string, second?: string) => {
+  duoTone: (first?: string, second?: string): Matrix => {
     const [fR, fG, fB] = colorToRGB(first === undefined ? 0xFFE580 : processColor(first))
     const [sR, sG, sB] = colorToRGB(second === undefined ? 0x338000 : processColor(second))
 
@@ -345,19 +355,19 @@ export default {
     ]
   },
 
-  protanomaly: () => staticFilters.protanomaly,
+  protanomaly: (): Matrix => staticFilters.protanomaly,
 
-  deuteranomaly: () => staticFilters.deuteranomaly,
+  deuteranomaly: (): Matrix => staticFilters.deuteranomaly,
 
-  tritanomaly: () => staticFilters.tritanomaly,
+  tritanomaly: (): Matrix => staticFilters.tritanomaly,
 
-  protanopia: () => staticFilters.protanopia,
+  protanopia: (): Matrix => staticFilters.protanopia,
 
-  deuteranopia: () => staticFilters.deuteranopia,
+  deuteranopia: (): Matrix => staticFilters.deuteranopia,
 
-  tritanopia: () => staticFilters.tritanopia,
+  tritanopia: (): Matrix => staticFilters.tritanopia,
 
-  achromatopsia: () => staticFilters.achromatopsia,
+  achromatopsia: (): Matrix => staticFilters.achromatopsia,
 
-  achromatomaly: () => staticFilters.achromatomaly
+  achromatomaly: (): Matrix => staticFilters.achromatomaly
 }

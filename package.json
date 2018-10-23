@@ -28,7 +28,8 @@
     "vrsource-tslint-rules": "^5.8.2"
   },
   "scripts": {
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "build": "tsc -p ."
   },
   "lint-staged": {
     "*.js": [
