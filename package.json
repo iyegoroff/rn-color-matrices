@@ -32,11 +32,13 @@
     "build": "tsc -p ."
   },
   "lint-staged": {
-    "*.{ts,json}": [
-      "tslint --fix -p .",
-      "tsc -p .",
-      "git add"
-    ],
+    "linters": {
+      "*.{ts}": [
+        "tslint --fix -p .",
+        "tsc -p .",
+        "git add"
+      ]
+    },
     "ignore": ["dist/*"]
   },
   "dependencies": {
