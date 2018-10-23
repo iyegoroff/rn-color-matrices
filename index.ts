@@ -370,4 +370,4 @@ export default {
   achromatopsia: (): Matrix => staticFilters.achromatopsia,
 
   achromatomaly: (): Matrix => staticFilters.achromatomaly
-}
+};
