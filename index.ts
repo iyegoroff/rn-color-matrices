@@ -1,14 +1,14 @@
-import { Platform, processColor } from 'react-native';
-import clamp from 'clamp';
+import { Platform, processColor } from 'react-native'
+import clamp from 'clamp'
 
-const bias = Platform.OS === 'ios' ? 1 : 255;
-const biasRev = Platform.OS === 'ios' ? 255 : 1;
+const bias = Platform.OS === 'ios' ? 1 : 255
+const biasRev = Platform.OS === 'ios' ? 255 : 1
 
-const colorToRGB = (color) => [
+const colorToRGB = (color: number) => [
   ((color >> 16) & 0xFF) / 255,
   ((color >> 8) & 0xFF) / 255,
   (color & 0xFF) / 255
-];
+]
 
 const staticFilters = {
   normal: [
@@ -157,7 +157,7 @@ const staticFilters = {
     0.163, 0.320, 0.516, 0, 0,
     0, 0, 0, 1, 0
   ]
-};
+}
 
 export default {
   normal: () => staticFilters.normal,
@@ -177,24 +177,24 @@ export default {
   ],
 
   hueRotate: (v = 0) => {
-    const cos = Math.cos(v);
-    const sin = Math.sin(v);
-    const a00 = (0.213) + (cos * 0.787) - (sin * 0.213);
-    const a01 = (0.715) - (cos * 0.715) - (sin * 0.715);
-    const a02 = (0.072) - (cos * 0.072) + (sin * 0.928);
-    const a10 = (0.213) - (cos * 0.213) + (sin * 0.143);
-    const a11 = (0.715) + (cos * 0.285) + (sin * 0.140);
-    const a12 = (0.072) - (cos * 0.072) - (sin * 0.283);
-    const a20 = (0.213) - (cos * 0.213) - (sin * 0.787);
-    const a21 = (0.715) - (cos * 0.715) + (sin * 0.715);
-    const a22 = (0.072) + (cos * 0.928) + (sin * 0.072);
+    const cos = Math.cos(v)
+    const sin = Math.sin(v)
+    const a00 = (0.213) + (cos * 0.787) - (sin * 0.213)
+    const a01 = (0.715) - (cos * 0.715) - (sin * 0.715)
+    const a02 = (0.072) - (cos * 0.072) + (sin * 0.928)
+    const a10 = (0.213) - (cos * 0.213) + (sin * 0.143)
+    const a11 = (0.715) + (cos * 0.285) + (sin * 0.140)
+    const a12 = (0.072) - (cos * 0.072) - (sin * 0.283)
+    const a20 = (0.213) - (cos * 0.213) - (sin * 0.787)
+    const a21 = (0.715) - (cos * 0.715) + (sin * 0.715)
+    const a22 = (0.072) + (cos * 0.928) + (sin * 0.072)
 
     return [
       a00, a01, a02, 0, 0,
       a10, a11, a12, 0, 0,
       a20, a21, a22, 0, 0,
       0, 0, 0, 1, 0
-    ];
+    ]
   },
 
   luminanceToAlpha: () => staticFilters.luminanceToAlpha,
@@ -202,25 +202,25 @@ export default {
   invert: () => staticFilters.invert,
 
   grayscale: (v = 1) => {
-    const cv = clamp(1 - v, 0, 1);
+    const cv = clamp(1 - v, 0, 1)
 
     return [
       0.2126 + 0.7874 * cv, 0.7152 - 0.7152 * cv, 0.0722 - 0.0722 * cv, 0, 0,
       0.2126 - 0.2126 * cv, 0.7152 + 0.2848 * cv, 0.0722 - 0.0722 * cv, 0, 0,
       0.2126 - 0.2126 * cv, 0.7152 - 0.7152 * cv, 0.0722 + 0.9278 * cv, 0, 0,
       0, 0, 0, 1, 0
-    ];
+    ]
   },
 
   sepia: (v = 1) => {
-    const cv = clamp(1 - v, 0, 1);
+    const cv = clamp(1 - v, 0, 1)
 
     return [
       0.393 + 0.607 * cv, 0.769 - 0.769 * cv, 0.189 - 0.189 * cv, 0, 0,
       0.349 - 0.349 * cv, 0.686 + 0.314 * cv, 0.168 - 0.168 * cv, 0, 0,
       0.272 - 0.272 * cv, 0.534 - 0.534 * cv, 0.131 + 0.869 * cv, 0, 0,
       0, 0, 0, 1, 0
-    ];
+    ]
   },
 
   nightvision: () => staticFilters.nightvision,
@@ -237,14 +237,14 @@ export default {
   ],
 
   contrast: (v = 1) => {
-    const n = 0.5 * (1 - v);
+    const n = 0.5 * (1 - v)
 
     return [
       v, 0, 0, 0, bias * n,
       0, v, 0, 0, bias * n,
       0, 0, v, 0, bias * n,
       0, 0, 0, 1, 0
-    ];
+    ]
   },
 
   temperature: (v = 0) => [
@@ -262,19 +262,19 @@ export default {
   ],
 
   threshold: (v = 0) => {
-    const rLum = 0.03086;
-    const gLum = 0.06094;
-    const bLum = 0.00820;
-    const r = rLum * 255;
-    const g = gLum * 255;
-    const b = bLum * 255;
+    const rLum = 0.03086
+    const gLum = 0.06094
+    const bLum = 0.00820
+    const r = rLum * 255
+    const g = gLum * 255
+    const b = bLum * 255
 
     return [
       r, g, b, 0, -bias * v,
       r, g, b, 0, -bias * v,
       r, g, b, 0, -bias * v,
       0, 0, 0, 1, 0
-    ];
+    ]
   },
 
   technicolor: () => staticFilters.technicolor,
@@ -321,28 +321,28 @@ export default {
 
   lsd: () => staticFilters.lsd,
 
-  colorTone: (desaturation, toned, lightColor, darkColor) => {
-    const [lR, lG, lB] = colorToRGB(lightColor === undefined ? 0xFFE580 : processColor(lightColor));
-    const [dR, dG, dB] = colorToRGB(darkColor === undefined ? 0x338000 : processColor(darkColor));
+  colorTone: (desaturation?: number, toned?: number, lightColor?: string, darkColor?: string) => {
+    const [lR, lG, lB] = colorToRGB(lightColor === undefined ? 0xFFE580 : processColor(lightColor))
+    const [dR, dG, dB] = colorToRGB(darkColor === undefined ? 0x338000 : processColor(darkColor))
 
     return [
       0.3, 0.59, 0.11, 0, 0,
       lR, lG, lB, (desaturation === undefined ? 0.2 : desaturation), 0,
       dR, dG, dB, (toned === undefined ? 0.15 : toned), 0,
       lR - dR, lG - dG, lB - dB, 0, 0
-    ];
+    ]
   },
 
-  duoTone: (first, second) => {
-    const [fR, fG, fB] = colorToRGB(first === undefined ? 0xFFE580 : processColor(first));
-    const [sR, sG, sB] = colorToRGB(second === undefined ? 0x338000 : processColor(second));
+  duoTone: (first?: string, second?: string) => {
+    const [fR, fG, fB] = colorToRGB(first === undefined ? 0xFFE580 : processColor(first))
+    const [sR, sG, sB] = colorToRGB(second === undefined ? 0x338000 : processColor(second))
 
     return [
       fR - sR, 0, 0, 0, sR * bias,
       fG - sG, 0, 0, 0, sG * bias,
       fB - sB, 0, 0, 0, sB * bias,
       0, 0, 0, 1, 0
-    ];
+    ]
   },
 
   protanomaly: () => staticFilters.protanomaly,
@@ -360,4 +360,4 @@ export default {
   achromatopsia: () => staticFilters.achromatopsia,
 
   achromatomaly: () => staticFilters.achromatomaly
-};
+}
