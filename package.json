@@ -29,13 +29,13 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "build": "tsc -p ."
+    "build": "tsc -p . && echo"
   },
   "lint-staged": {
     "linters": {
-      "*.{ts}": [
+      "*.ts": [
         "tslint --fix -p .",
-        "tsc -p .",
+        "npm run build",
         "git add"
       ]
     },
