@@ -32,11 +32,12 @@
     "build": "tsc -p ."
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{ts,json}": [
       "tslint --fix -p .",
       "tsc -p .",
       "git add"
-    ]
+    ],
+    "ignore": ["dist/*"]
   },
   "dependencies": {
     "clamp": "^1.0.1"
