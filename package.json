@@ -32,7 +32,7 @@
     "build": "tsc -p ."
   },
   "lint-staged": {
-    "*.js": [
+    "*.ts": [
       "tslint --fix -p .",
       "tsc -p .",
       "git add"
