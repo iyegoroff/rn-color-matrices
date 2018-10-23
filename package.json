@@ -28,13 +28,18 @@
     "vrsource-tslint-rules": "^5.8.2"
   },
   "scripts": {
-    "precommit": "lint-staged",
-    "build": "tsc -p . && echo"
+    "build": "tsc -p . && :",
+    "lint": "tslint --fix -p . && :"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "linters": {
       "*.ts": [
-        "tslint --fix -p .",
+        "npm run lint",
         "npm run build",
         "git add"
       ]
